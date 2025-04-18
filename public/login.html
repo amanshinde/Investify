@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
+  <body>
+    <div class="container" id="container">
+      <div class="form-container sign-up-container">
+        <form name="submit-to-google-sheet-signup" id="signupForm">
+          <h1>Create Account</h1>
+          <div class="role-selection">
+            <label style="margin-top:10px;">Select Role:</label>
+            <div style="margin-top: 5px; display: flex; justify-content: center; gap: 10px;">
+              <button type="button" class="role-btn" data-role="Startup">Startup</button>
+              <button type="button" class="role-btn" data-role="Mentor">Mentor</button>
+              <button type="button" class="role-btn" data-role="Investor">Investor</button>
+            </div>
+            <input type="hidden" id="selectedRole" name="Role" />
+          </div>
+          <input type="text" name="Name" id="signupName" placeholder="Name" required />
+          <input type="email" name="Email" id="signupEmail" placeholder="Email" required />
+          <input type="password" id="signupPassword" name="Password" placeholder="Password" required />
+          <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+      
+          <button type="submit" style="margin-top: 15px;">Sign Up</button>
+          <div id="g_id_signup" style="margin-top: 10px;"></div>
+        </form>
+        
+      </div>
+      
+      <div class="form-container sign-in-container">
+        <form name="submit-to-google-sheet-signin">
+          <h1>Sign in</h1>
+          <span>or use your account</span>
+          <input type="email" name="Email" placeholder="Email" required />
+          <input type="password" name="Password" placeholder="Password" required />
+          <a href="#">Forgot your password?</a>
+          <button type="submit">Sign In</button>
+          <div id="g_id_signin" style="margin-top: 10px;"></div>
+        </form>
+        
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <div class="overlay-panel overlay-left">
+            <h1>Welcome Back!</h1>
+            <p>Log in to get into the Portal</p>
+            <button class="ghost" id="signIn">Sign In</button>
+          </div>
+          <div class="overlay-panel overlay-right">
+            <h1>Hello, Entrepreneurs</h1>
+            <p>Enter your details and begin your journey with us</p>
+            <button class="ghost" id="signUp">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // Handle overlay panel toggle
+document.getElementById('signUp').addEventListener('click', () => {
+  document.getElementById('container').classList.add('right-panel-active');
+});
+
+document.getElementById('signIn').addEventListener('click', () => {
+  document.getElementById('container').classList.remove('right-panel-active');
+});
+
+// Handle role selection
+const roleButtons = document.querySelectorAll('.role-btn');
+const selectedRoleInput = document.getElementById('selectedRole');
+
+roleButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    roleButtons.forEach(b => b.classList.remove('active-role'));
+    btn.classList.add('active-role');
+    selectedRoleInput.value = btn.getAttribute('data-role');
+  });
+});
+
+// Confirm password validation before submit
+document.forms['submit-to-google-sheet-signup'].addEventListener('submit', (e) => {
+  const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  
+  if (password !== confirmPassword) {
+    e.preventDefault();
+    alert('Passwords do not match!');
+  }
+});
+
+const GOOGLE_CLIENT_ID = '486497454030-v6uer86rh0h6ddo430k8blnhb08dr6kk.apps.googleusercontent.com';
+
+// Callback after successful sign-in
+function handleGoogleCredentialResponse(response) {
+  const decoded = jwt_decode(response.credential);
+  const { email, name } = decoded;
+
+  fetch("http://localhost:5000/api/auth/google-login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, name })
+  })
+    .then(res => res.json())
+    .then(data => {
+      localStorage.setItem("token", data.token);
+      alert("Google Sign-In successful!");
+      window.location.href = "scan.html";
+    })
+    .catch(err => console.error(err));
+}
+
+
+// Initialize Google Sign-In button for Sign Up
+window.onload = function () {
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredentialResponse
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById("g_id_signup"),
+    { theme: "outline", size: "large" }
+  );
+
+  google.accounts.id.renderButton(
+    document.getElementById("g_id_signin"),
+    { theme: "outline", size: "large" }
+  );
+};
+
+  // Add this inside your <script> tag
+  document.getElementById('signupForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const payload = {
+      name: document.getElementById('signupName').value,
+      email: document.getElementById('signupEmail').value,
+      password: document.getElementById('signupPassword').value,
+      role: document.getElementById('selectedRole').value
+    };
+
+    try {
+      const res = await fetch('http://localhost:5000/auth/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      alert(data.msg || 'Signup success');
+    } catch (err) {
+      console.error(err);
+      alert('Signup failed!');
+    }
+  });
+
+
+    </script>
+  </body>
+</html>
