@@ -161,6 +161,68 @@ window.onload = function () {
     }
   });
 
+// Handle login form submission
+document.forms['submit-to-google-sheet-signin'].addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const email = this.elements['Email'].value;
+  const password = this.elements['Password'].value;
+
+  try {
+    const res = await fetch('http://localhost:5000/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+    
+    if (res.ok) {
+      // Store token and role in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('role', data.role);
+      localStorage.setItem('name', data.name);
+
+      // Check if profile is completed
+      if (data.profileCompleted) {
+        // Redirect to role-specific dashboard
+        switch(data.role) {
+          case 'Investor':
+            window.location.href = 'dashboard/investordash.html';
+            break;
+          case 'Mentor':
+            window.location.href = 'dashboard/mentordash.html';
+            break;
+          case 'Startup':
+            window.location.href = 'dashboard/startupdash.html';
+            break;
+          default:
+            alert('Invalid role');
+        }
+      } else {
+        // Redirect to profile creation page
+        switch(data.role) {
+          case 'Investor':
+            window.location.href = 'profile/investor.html';
+            break;
+          case 'Mentor':
+            window.location.href = 'profile/mentor.html';
+            break;
+          case 'Startup':
+            window.location.href = 'profile/startup.html';
+            break;
+          default:
+            alert('Invalid role');
+        }
+      }
+    } else {
+      alert(data.msg || 'Login failed');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Login failed!');
+  }
+});
 
     </script>
   </body>

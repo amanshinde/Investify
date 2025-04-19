@@ -30,7 +30,50 @@ router.post('/login', async (req, res) => {
   if (!isMatch) return res.status(401).json({ msg: 'Invalid credentials' });
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  res.json({ token });
+  res.json({ 
+    token,
+    role: user.role,
+    name: user.name,
+    profileCompleted: user.profileCompleted
+  });
+});
+
+// Check profile completion status
+router.get('/profile-status', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ msg: 'No token provided' });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    res.json({ 
+      profileCompleted: user.profileCompleted,
+      role: user.role
+    });
+  } catch (error) {
+    res.status(401).json({ msg: 'Invalid token' });
+  }
+});
+
+// Update profile completion status
+router.post('/complete-profile', async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(401).json({ msg: 'No token provided' });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    user.profileCompleted = true;
+    await user.save();
+
+    res.json({ msg: 'Profile completed successfully' });
+  } catch (error) {
+    res.status(401).json({ msg: 'Invalid token' });
+  }
 });
 
 // Google OAuth

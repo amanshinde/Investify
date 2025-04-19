@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Profile</title>
+    <!-- Font Awesome for the edit icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Embedded CSS for the Instagram default profile icon */
+        .instagram-default-icon {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .instagram-default-icon::after {
+            content: "";
+            width: 80%;
+            height: 80%;
+            background: white;
+            border-radius: 50%;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238e8e8e'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>");
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fafafa;
+    margin: 0;
+    padding: 20px;
+    color: #0c007c;
+}
+
+.container {
+    max-width: 500px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 10px rgba(33, 44, 255,);
+}
+
+h1 {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+/* Instagram-style Profile Picture */
+.profile-pic-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.profile-pic-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+}
+
+#profilePic {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+
+.edit-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: #3897f0;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.edit-icon:hover {
+    background: #2684f0;
+    transform: scale(1.1);
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+input[type="text"],
+textarea,
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background: #fafafa;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: #3897f0;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #2684f0;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Startup Profile</h1>
+        
+        <!-- Profile Picture Upload (Instagram-style) -->
+        <div class="profile-pic-container">
+            <div class="profile-pic-wrapper">
+                <!-- Instagram default profile icon container -->
+                <div class="instagram-default-icon" id="profilePicContainer">
+                    <img id="profilePic" style="display: none;">
+                </div>
+                <input type="file" id="logoInput" accept="image/*" hidden>
+                <label for="logoInput" class="edit-icon">
+                    <i class="fas fa-camera"></i>
+                </label>
+            </div>
+        </div>
+
+        <!-- Form Fields -->
+        <form id="startupForm">
+            <div class="form-group">
+                <label for="founder">Startup Name</label>
+                <input type="text" id="Startup" placeholder="Startup name">
+            </div>
+            <!-- Founder Name -->
+            <div class="form-group">
+                <label for="founder">Founder Name</label>
+                <input type="text" id="founder" placeholder="e.g., Satya Nadella">
+            </div>
+
+            <!-- Industry Type -->
+            <div class="form-group">
+                <label for="industry">Industry Type</label>
+                <select id="industry">
+                    <option value="Tech">Technology</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" rows="3" placeholder="Describe your startup..."></textarea>
+            </div>
+
+            <button type="button" onclick="updateProfile()">Create profile</button>
+        </form>
+    </div>
+    <script>
+        // Authentication check
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            const role = localStorage.getItem('role');
+            
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            if (role !== 'Startup') {
+                alert('Unauthorized access. Please login as a Startup.');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            // Pre-fill the name field with the stored name
+            const storedName = localStorage.getItem('name');
+            if (storedName) {
+                document.getElementById('Startup').value = storedName;
+            }
+        });
+
+        // Handle profile picture upload and preview
+        const logoInput = document.getElementById('logoInput');
+        const profilePic = document.getElementById('profilePic');
+        const profilePicContainer = document.getElementById('profilePicContainer');
+    
+        logoInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePic.src = e.target.result;
+                    profilePic.style.display = 'block';
+                    profilePicContainer.style.background = 'none'; // Remove the default icon background
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    
+        // Handle form submission
+        async function updateProfile() {
+            const startup = document.getElementById('Startup').value.trim();
+            const founder = document.getElementById('founder').value.trim();
+            const industry = document.getElementById('industry').value;
+            const description = document.getElementById('description').value.trim();
+            const logo = document.getElementById('profilePic').src;
+
+            if (!startup || !founder || !description) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('token');
+                const res = await fetch('http://localhost:5000/api/profiles/startup', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        startupName: startup,
+                        founderName: founder,
+                        industry,
+                        description,
+                        logo,
+                        stage: 'Idea' // Default stage, you might want to add a stage selector to the form
+                    })
+                });
+
+                if (res.ok) {
+                    window.location.href = 'http://localhost:5000/dashboard/startupdash.html';
+                } else {
+                    const data = await res.json();
+                    alert(data.msg || 'Failed to save profile');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('An error occurred. Please try again.');
+            }
+        }
+
+        // Modified save profile function to include authentication
+        async function saveStartupProfile() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please login to save your profile');
+                window.location.href = '/login.html';
+                return;
+            }
+
+            const name = document.getElementById('Startup').value;
+            const industry = document.getElementById('industry').value;
+            const description = document.getElementById('description').value;
+
+            try {
+                const response = await fetch('http://localhost:5000/api/startup/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name,
+                        industry,
+                        description
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Profile saved successfully!');
+                    // Redirect to dashboard or next page
+                    window.location.href = '/dashboard.html';
+                } else {
+                    const data = await response.json();
+                    alert(data.message || 'Failed to save profile');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to save profile');
+            }
+        }
+    </script>
+    
+</body>
+</html>

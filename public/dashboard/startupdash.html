@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3f7;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s;
+            position: fixed;
+            height: 100vh;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h3 {
+            color: white;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: var(--secondary-color);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            color: var(--secondary-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-header h3 {
+            color: var(--secondary-color);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* File Upload Styles */
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent-color);
+            background-color: rgba(79, 195, 247, 0.05);
+        }
+
+        .file-upload i {
+            font-size: 48px;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .file-upload p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* Pitch Card Styles */
+        .pitch-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .pitch-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .pitch-card h4 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .pitch-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .pitch-card .pitch-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .pitch-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Engagement Metrics */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-card h3 {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .metric-card p {
+            color: #666;
+        }
+
+        /* Feedback Styles */
+        .feedback-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .feedback-mentor {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .feedback-date {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .feedback-rating {
+            color: var(--warning-color);
+            margin-bottom: 10px;
+        }
+
+        .feedback-content {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Investor List Styles */
+        .investor-list {
+            margin-top: 20px;
+        }
+
+        .investor-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s;
+        }
+
+        .investor-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .investor-info {
+            flex: 1;
+        }
+
+        .investor-name {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .investor-email {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .investor-actions a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-left: 15px;
+        }
+
+        .investor-actions a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .investor-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .investor-actions {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+        }
+
+        /* Hidden class for page switching */
+        .hidden {
+            display: none;
+        }
+
+        /* Tab Styles */
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Startup Dashboard</h3>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="menu-item" data-page="my-pitch">
+                    <i class="fas fa-file-alt"></i>
+                    <span>My Pitch</span>
+                </div>
+                <div class="menu-item" data-page="engagement">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Engagement</span>
+                </div>
+                <div class="menu-item" data-page="mentor-feedback">
+                    <i class="fas fa-comments"></i>
+                    <span>Mentor Feedback</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard-page">
+                <div class="header">
+                    <h2>Create Your Pitch</h2>
+                    <div class="user-info">
+                        <img src="https://via.placeholder.com/40" alt="User">
+                        <span>Founder</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Pitch Information</h3>
+                    </div>
+                    <form id="pitch-form">
+                        <div class="form-group">
+                            <label for="pitch-title">Pitch Title</label>
+                            <input type="text" id="pitch-title" class="form-control" placeholder="Enter your pitch title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pitch-description">Pitch Description</label>
+                            <textarea id="pitch-description" class="form-control" placeholder="Describe your startup, problem you're solving, solution, market opportunity, etc." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Pitch Materials</label>
+                            <div class="file-upload" id="video-upload">
+                                <i class="fas fa-video"></i>
+                                <p>Click to upload pitch video</p>
+                                <span class="file-name" id="video-name">No file chosen</span>
+                                <input type="file" id="pitch-video" accept="video/*">
+                            </div>
+                            <div class="file-upload" id="ppt-upload">
+                                <i class="fas fa-file-powerpoint"></i>
+                                <p>Click to upload pitch deck (PPT)</p>
+                                <span class="file-name" id="ppt-name">No file chosen</span>
+                                <input type="file" id="pitch-ppt" accept=".ppt,.pptx,.pdf">
+                            </div>
+                            <div class="file-upload" id="pdf-upload">
+                                <i class="fas fa-file-pdf"></i>
+                                <p>Click to upload additional PDF</p>
+                                <span class="file-name" id="pdf-name">No file chosen</span>
+                                <input type="file" id="pitch-pdf" accept=".pdf">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload Pitch</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- My Pitch Page -->
+            <div id="my-pitch-page" class="hidden">
+                <div class="header">
+                    <h2>My Pitch</h2>
+                    <div class="user-info">
+                        <img src="https://via.placeholder.com/40" alt="User">
+                        <span>Founder</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Current Pitch</h3>
+                        <button class="btn btn-warning" id="edit-pitch-btn">Edit Pitch</button>
+                    </div>
+                    <div id="pitch-view">
+                        <div class="pitch-card">
+                            <h4 id="view-pitch-title">Startup XYZ - Revolutionizing Industry ABC</h4>
+                            <div class="pitch-meta">
+                                <span>Last updated: <span id="view-pitch-date">June 15, 2023</span></span>
+                                <span>Status: <span class="text-success">Published</span></span>
+                            </div>
+                            <p id="view-pitch-description">Our startup is solving the critical problem of inefficient processes in Industry ABC by leveraging cutting-edge AI technology. With a $10B market opportunity and a unique approach, we're positioned to capture 20% market share within 3 years.</p>
+                            <div class="pitch-actions">
+                                <button class="btn btn-primary" id="view-video-btn">
+                                    <i class="fas fa-play"></i> View Video
+                                </button>
+                                <button class="btn btn-primary" id="view-ppt-btn">
+                                    <i class="fas fa-file-powerpoint"></i> View Deck
+                                </button>
+                                <button class="btn btn-primary" id="view-pdf-btn">
+                                    <i class="fas fa-file-pdf"></i> View PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="pitch-edit" class="hidden">
+                        <form id="edit-pitch-form">
+                            <div class="form-group">
+                                <label for="edit-pitch-title">Pitch Title</label>
+                                <input type="text" id="edit-pitch-title" class="form-control" value="Startup XYZ - Revolutionizing Industry ABC" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="edit-pitch-description">Pitch Description</label>
+                                <textarea id="edit-pitch-description" class="form-control" required>Our startup is solving the critical problem of inefficient processes in Industry ABC by leveraging cutting-edge AI technology. With a $10B market opportunity and a unique approach, we're positioned to capture 20% market share within 3 years.</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Update Pitch Materials</label>
+                                <div class="file-upload" id="edit-video-upload">
+                                    <i class="fas fa-video"></i>
+                                    <p>Click to update pitch video</p>
+                                    <span class="file-name" id="edit-video-name">Current: pitch_video.mp4</span>
+                                    <input type="file" id="edit-pitch-video" accept="video/*">
+                                </div>
+                                <div class="file-upload" id="edit-ppt-upload">
+                                    <i class="fas fa-file-powerpoint"></i>
+                                    <p>Click to update pitch deck (PPT)</p>
+                                    <span class="file-name" id="edit-ppt-name">Current: pitch_deck.pptx</span>
+                                    <input type="file" id="edit-pitch-ppt" accept=".ppt,.pptx,.pdf">
+                                </div>
+                                <div class="file-upload" id="edit-pdf-upload">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <p>Click to update additional PDF</p>
+                                    <span class="file-name" id="edit-pdf-name">Current: additional_info.pdf</span>
+                                    <input type="file" id="edit-pitch-pdf" accept=".pdf">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <button type="button" class="btn btn-danger" id="cancel-edit-btn">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Engagement Page -->
+            <div id="engagement-page" class="hidden">
+                <div class="header">
+                    <h2>Pitch Engagement</h2>
+                    <div class="user-info">
+                        <img src="https://via.placeholder.com/40" alt="User">
+                        <span>Founder</span>
+                    </div>
+                </div>
+
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" data-tab="metrics">Engagement Metrics</button>
+                        <button class="tab-btn" data-tab="investors">Interested Investors</button>
+                    </div>
+                    
+                    <div class="tab-content active" id="metrics-tab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Engagement Metrics</h3>
+                                <div>
+                                    <select id="time-period" class="form-control" style="width: auto; display: inline-block;">
+                                        <option value="7">Last 7 days</option>
+                                        <option value="30" selected>Last 30 days</option>
+                                        <option value="90">Last 90 days</option>
+                                        <option value="all">All time</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="metrics">
+                                <div class="metric-card">
+                                    <h3 id="views-count">1,245</h3>
+                                    <p>Total Views</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h3 id="downloads-count">328</h3>
+                                    <p>Deck Downloads</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h3 id="watch-time">4.5</h3>
+                                    <p>Avg. Watch Time (min)</p>
+                                </div>
+                                <div class="metric-card">
+                                    <h3 id="completion-rate">72%</h3>
+                                    <p>Video Completion Rate</p>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>Engagement Over Time</h3>
+                                </div>
+                                <div id="engagement-chart" style="height: 300px; background-color: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                    <p style="color: #888;">Engagement chart will be displayed here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="tab-content" id="investors-tab">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Investors Who Expressed Interest</h3>
+                                <div>
+                                    <span class="badge" style="background-color: #e9ecef; padding: 5px 10px; border-radius: 20px; color: #495057;">
+                                        <span id="investor-count">5</span> investors
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="investor-list">
+                                <div class="investor-item">
+                                    <div class="investor-info">
+                                        <div class="investor-name">Michael Anderson</div>
+                                        <div class="investor-email">michael.anderson@venturecapital.com</div>
+                                    </div>
+                                    <div class="investor-actions">
+                                        <a href="mailto:michael.anderson@venturecapital.com"><i class="fas fa-envelope"></i> Contact</a>
+                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="investor-item">
+                                    <div class="investor-info">
+                                        <div class="investor-name">Sarah Johnson</div>
+                                        <div class="investor-email">sarah.johnson@techventures.com</div>
+                                    </div>
+                                    <div class="investor-actions">
+                                        <a href="mailto:sarah.johnson@techventures.com"><i class="fas fa-envelope"></i> Contact</a>
+                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="investor-item">
+                                    <div class="investor-info">
+                                        <div class="investor-name">David Chen</div>
+                                        <div class="investor-email">david.chen@angelinvestors.net</div>
+                                    </div>
+                                    <div class="investor-actions">
+                                        <a href="mailto:david.chen@angelinvestors.net"><i class="fas fa-envelope"></i> Contact</a>
+                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="investor-item">
+                                    <div class="investor-info">
+                                        <div class="investor-name">Emily Rodriguez</div>
+                                        <div class="investor-email">emily.rodriguez@growthfund.com</div>
+                                    </div>
+                                    <div class="investor-actions">
+                                        <a href="mailto:emily.rodriguez@growthfund.com"><i class="fas fa-envelope"></i> Contact</a>
+                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                                    </div>
+                                </div>
+                                
+                                <div class="investor-item">
+                                    <div class="investor-info">
+                                        <div class="investor-name">Robert Williams</div>
+                                        <div class="investor-email">robert.williams@startupfund.com</div>
+                                    </div>
+                                    <div class="investor-actions">
+                                        <a href="mailto:robert.williams@startupfund.com"><i class="fas fa-envelope"></i> Contact</a>
+                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mentor Feedback Page -->
+            <div id="mentor-feedback-page" class="hidden">
+                <div class="header">
+                    <h2>Mentor Feedback</h2>
+                    <div class="user-info">
+                        <img src="https://via.placeholder.com/40" alt="User">
+                        <span>Founder</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Feedback Received</h3>
+                        <div>
+                            <select id="feedback-filter" class="form-control" style="width: auto; display: inline-block;">
+                                <option value="all">All Feedback</option>
+                                <option value="recent">Recent First</option>
+                                <option value="rating-high">Highest Rating First</option>
+                                <option value="rating-low">Lowest Rating First</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="feedback-list">
+                        <div class="feedback-item">
+                            <div class="feedback-header">
+                                <span class="feedback-mentor">Dr. Sarah Johnson (Investor, Tech Ventures)</span>
+                                <span class="feedback-date">June 10, 2023</span>
+                            </div>
+                            <div class="feedback-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>(4.5/5)</span>
+                            </div>
+                            <div class="feedback-content">
+                                <p>Your pitch is very compelling with a clear problem statement and solution. The market opportunity is well-defined. I suggest strengthening the competitive differentiation section - currently it's a bit light compared to the rest of the pitch. Also, consider adding more traction metrics if available. Overall great potential!</p>
+                            </div>
+                        </div>
+
+                        <div class="feedback-item">
+                            <div class="feedback-header">
+                                <span class="feedback-mentor">Mark Williams (Entrepreneur in Residence, Startup Incubator)</span>
+                                <span class="feedback-date">June 5, 2023</span>
+                            </div>
+                            <div class="feedback-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>(4/5)</span>
+                            </div>
+                            <div class="feedback-content">
+                                <p>Strong pitch overall. The video could be more engaging in the first 30 seconds - you're losing some attention there. The financial projections seem optimistic - consider adding more conservative scenarios. Team slide is good but highlight more relevant experience. The product demo was excellent - that should come earlier in the presentation.</p>
+                            </div>
+                        </div>
+
+                        <div class="feedback-item">
+                            <div class="feedback-header">
+                                <span class="feedback-mentor">Alex Chen (VC Partner, Growth Capital)</span>
+                                <span class="feedback-date">May 28, 2023</span>
+                            </div>
+                            <div class="feedback-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>(5/5)</span>
+                            </div>
+                            <div class="feedback-content">
+                                <p>One of the best pitches I've seen this quarter. Clear value proposition, strong team, and impressive early traction. The ask is reasonable for the stage. I'd be interested in discussing investment opportunities. My only suggestion would be to tighten the timeline slide - some milestones seem too far out.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Page navigation
+            const menuItems = document.querySelectorAll('.menu-item');
+            const pages = document.querySelectorAll('[id$="-page"]');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all menu items
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Hide all pages
+                    pages.forEach(page => page.classList.add('hidden'));
+                    
+                    // Show selected page
+                    const pageId = this.getAttribute('data-page') + '-page';
+                    document.getElementById(pageId).classList.remove('hidden');
+                });
+            });
+
+            // Tab navigation for engagement page
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab') + '-tab';
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // File upload functionality for dashboard
+            const videoUpload = document.getElementById('video-upload');
+            const pptUpload = document.getElementById('ppt-upload');
+            const pdfUpload = document.getElementById('pdf-upload');
+            const videoInput = document.getElementById('pitch-video');
+            const pptInput = document.getElementById('pitch-ppt');
+            const pdfInput = document.getElementById('pitch-pdf');
+            const videoName = document.getElementById('video-name');
+            const pptName = document.getElementById('ppt-name');
+            const pdfName = document.getElementById('pdf-name');
+
+            videoUpload.addEventListener('click', () => videoInput.click());
+            pptUpload.addEventListener('click', () => pptInput.click());
+            pdfUpload.addEventListener('click', () => pdfInput.click());
+
+            videoInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    videoName.textContent = this.files[0].name;
+                }
+            });
+
+            pptInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    pptName.textContent = this.files[0].name;
+                }
+            });
+
+            pdfInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    pdfName.textContent = this.files[0].name;
+                }
+            });
+
+            // Pitch form submission
+            const pitchForm = document.getElementById('pitch-form');
+            pitchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('pitch-title').value;
+                const description = document.getElementById('pitch-description').value;
+                
+                // In a real app, you would upload files to a server here
+                alert(`Pitch "${title}" submitted successfully!`);
+                
+                // Reset form
+                pitchForm.reset();
+                videoName.textContent = 'No file chosen';
+                pptName.textContent = 'No file chosen';
+                pdfName.textContent = 'No file chosen';
+            });
+
+            // My Pitch page functionality
+            const editPitchBtn = document.getElementById('edit-pitch-btn');
+            const pitchView = document.getElementById('pitch-view');
+            const pitchEdit = document.getElementById('pitch-edit');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
+            const editPitchForm = document.getElementById('edit-pitch-form');
+
+            editPitchBtn.addEventListener('click', function() {
+                pitchView.classList.add('hidden');
+                pitchEdit.classList.remove('hidden');
+            });
+
+            cancelEditBtn.addEventListener('click', function() {
+                pitchEdit.classList.add('hidden');
+                pitchView.classList.remove('hidden');
+            });
+
+            editPitchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Update the view with edited content
+                document.getElementById('view-pitch-title').textContent = 
+                    document.getElementById('edit-pitch-title').value;
+                document.getElementById('view-pitch-description').textContent = 
+                    document.getElementById('edit-pitch-description').value;
+                document.getElementById('view-pitch-date').textContent = 
+                    new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                
+                // Handle file updates in a real app
+                const editVideoInput = document.getElementById('edit-pitch-video');
+                if (editVideoInput.files.length > 0) {
+                    document.getElementById('edit-video-name').textContent = 'Current: ' + editVideoInput.files[0].name;
+                }
+                
+                const editPptInput = document.getElementById('edit-pitch-ppt');
+                if (editPptInput.files.length > 0) {
+                    document.getElementById('edit-ppt-name').textContent = 'Current: ' + editPptInput.files[0].name;
+                }
+                
+                const editPdfInput = document.getElementById('edit-pitch-pdf');
+                if (editPdfInput.files.length > 0) {
+                    document.getElementById('edit-pdf-name').textContent = 'Current: ' + editPdfInput.files[0].name;
+                }
+                
+                pitchEdit.classList.add('hidden');
+                pitchView.classList.remove('hidden');
+                
+                alert('Pitch updated successfully!');
+            });
+
+            // File upload functionality for edit section
+            const editVideoUpload = document.getElementById('edit-video-upload');
+            const editPptUpload = document.getElementById('edit-ppt-upload');
+            const editPdfUpload = document.getElementById('edit-pdf-upload');
+            const editVideoInput = document.getElementById('edit-pitch-video');
+            const editPptInput = document.getElementById('edit-pitch-ppt');
+            const editPdfInput = document.getElementById('edit-pitch-pdf');
+
+            editVideoUpload.addEventListener('click', () => editVideoInput.click());
+            editPptUpload.addEventListener('click', () => editPptInput.click());
+            editPdfUpload.addEventListener('click', () => editPdfInput.click());
+
+            // View buttons functionality
+            document.getElementById('view-video-btn').addEventListener('click', function() {
+                alert('Opening pitch video...');
+            });
+
+            document.getElementById('view-ppt-btn').addEventListener('click', function() {
+                alert('Opening pitch deck...');
+            });
+
+            document.getElementById('view-pdf-btn').addEventListener('click', function() {
+                alert('Opening additional PDF...');
+            });
+
+            // Engagement page time period filter
+            document.getElementById('time-period').addEventListener('change', function() {
+                // In a real app, this would fetch new data based on the selected time period
+                console.log('Time period changed to:', this.value);
+            });
+
+            // Feedback filter
+            document.getElementById('feedback-filter').addEventListener('change', function() {
+                // In a real app, this would filter or sort the feedback
+                console.log('Feedback filter changed to:', this.value);
+            });
+        });
+    </script>
+</body>
+</html>
