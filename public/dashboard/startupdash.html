@@ -834,40 +834,10 @@
         <div class="card">
           <div class="card-header">
             <h3>Available Mentors</h3>
+           
           </div>
           <div class="investor-list" id="mentor-list">
-            <div class="investor-item">
-              <div class="investor-info">
-                <div class="investor-name">Dr. Sarah Johnson</div>
-                <div class="investor-email">sarah.johnson@techventures.com</div>
-              </div>
-              <div class="investor-actions">
-                <a href="#"><i class="fas fa-user"></i> View Profile</a>
-                <button class="btn btn-primary">Request Feedback</button>
-              </div>
-            </div>
-  
-            <div class="investor-item">
-              <div class="investor-info">
-                <div class="investor-name">Mark Williams</div>
-                <div class="investor-email">mark.williams@incubator.org</div>
-              </div>
-              <div class="investor-actions">
-                <a href="#"><i class="fas fa-user"></i> View Profile</a>
-                <button class="btn btn-primary">Request Feedback</button>
-              </div>
-            </div>
-  
-            <div class="investor-item">
-              <div class="investor-info">
-                <div class="investor-name">Alex Chen</div>
-                <div class="investor-email">alex.chen@growthcapital.com</div>
-              </div>
-              <div class="investor-actions">
-                <a href="#"><i class="fas fa-user"></i> View Profile</a>
-                <button class="btn btn-primary">Request Feedback</button>
-              </div>
-            </div>
+            <!-- Mentor profiles will be loaded here dynamically -->
           </div>
         </div>
       </div>
@@ -1017,7 +987,13 @@
                     
                     // Show selected page
                     const pageId = this.getAttribute('data-page') + '-page';
-                    document.getElementById(pageId).classList.remove('hidden');
+                    const selectedPage = document.getElementById(pageId);
+                    selectedPage.classList.remove('hidden');
+
+                    // If mentors page is selected, fetch mentors
+                    if (pageId === 'mentors-page') {
+                        fetchMentorProfiles();
+                    }
                 });
             });
 
@@ -1336,6 +1312,122 @@
                 // In a real app, this would filter or sort the feedback
                 console.log('Feedback filter changed to:', this.value);
             });
+
+            // Add this function to fetch mentor profiles
+            async function fetchMentorProfiles() {
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        console.error('No token found');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    console.log('Fetching mentor profiles...'); // Debug log
+                    const response = await fetch('http://localhost:5000/api/profiles/mentors', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.status === 401) {
+                        localStorage.removeItem('token');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch mentors: ${response.status} ${response.statusText}`);
+                    }
+
+                    const mentors = await response.json();
+                    console.log('Fetched mentors:', mentors); // Debug log
+                    renderMentorList(mentors);
+                } catch (error) {
+                    console.error('Error fetching mentors:', error);
+                    alert('Failed to load mentors. Please try again later.');
+                }
+            }
+
+            // Add this function to render mentor list
+            function renderMentorList(mentors) {
+                const mentorList = document.getElementById('mentor-list');
+                if (!mentorList) {
+                    console.error('Mentor list element not found');
+                    return;
+                }
+
+                mentorList.innerHTML = '';
+
+                if (!mentors || mentors.length === 0) {
+                    mentorList.innerHTML = '<p class="empty-message">No mentors available at the moment.</p>';
+                    return;
+                }
+
+                mentors.forEach(mentor => {
+                    const mentorItem = document.createElement('div');
+                    mentorItem.className = 'investor-item';
+                    mentorItem.innerHTML = `
+                        <div class="investor-info">
+                            <div class="investor-avatar">
+                                <img src="${mentor.profilePicture || 'https://via.placeholder.com/50'}" alt="${mentor.name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
+                            </div>
+                            <div class="investor-details">
+                                <div class="investor-name">${mentor.name}</div>
+                                <div class="investor-position">${mentor.position}</div>
+                                <div class="investor-expertise">
+                                    ${mentor.expertise.map(exp => `<span class="expertise-tag">${exp}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="investor-actions">
+                            <button class="btn btn-primary" onclick="window.requestMentorFeedback('${mentor._id}')">
+                                <i class="fas fa-comments"></i> Request Feedback
+                            </button>
+                        </div>
+                    `;
+                    mentorList.appendChild(mentorItem);
+                });
+            }
+
+            // Make requestMentorFeedback globally available
+            window.requestMentorFeedback = async function(mentorId) {
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    const response = await fetch('http://localhost:5000/api/mentors/request-feedback', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ mentorId })
+                    });
+
+                    if (response.ok) {
+                        alert('Feedback request sent successfully!');
+                    } else {
+                        const error = await response.json();
+                        alert(error.msg || 'Failed to send feedback request');
+                    }
+                } catch (error) {
+                    console.error('Error requesting feedback:', error);
+                    alert('Failed to send feedback request. Please try again later.');
+                }
+            };
+
+            // Add event listener for mentors page
+            const mentorsMenuItem = document.querySelector('[data-page="mentors"]');
+            if (mentorsMenuItem) {
+                mentorsMenuItem.addEventListener('click', fetchMentorProfiles);
+            } else {
+                console.error('Mentors menu item not found');
+            }
         });
     </script>
 </body>

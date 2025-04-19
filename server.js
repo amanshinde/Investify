@@ -6,6 +6,7 @@ const passport = require('passport');
 const authRoutes = require('./routes/auth');
 const profileRoutes = require('./routes/profiles');
 const pitchRoutes = require('./routes/pitches');
+const mentorRoutes = require('./routes/mentors');
 const path = require('path');
 const fs = require('fs');
 require('./config/passport')(passport);
@@ -78,6 +79,7 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/auth', authRoutes);
 app.use('/api/profiles', profileRoutes);
 app.use('/api/pitches', pitchRoutes);
+app.use('/api/mentors', mentorRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {

@@ -209,4 +209,40 @@ router.get('/dashboard-data', verifyToken, async (req, res) => {
   }
 });
 
+// Get all mentor profiles
+router.get('/mentors', verifyToken, async (req, res) => {
+  try {
+    const { expertise } = req.query;
+    let query = {};
+
+    if (expertise) {
+      query.expertise = { $in: [expertise] };
+    }
+
+    console.log('Mentor query:', query); // Debug log
+
+    const mentorProfiles = await MentorProfile.find(query)
+      .populate('userId', 'name')
+      .sort({ createdAt: -1 });
+
+    console.log('Found mentor profiles:', mentorProfiles.length); // Debug log
+
+    // Transform the data to include mentor name
+    const mentors = mentorProfiles.map(profile => ({
+      _id: profile._id,
+      name: profile.userId.name,
+      position: profile.position,
+      expertise: profile.expertise,
+      description: profile.description,
+      profilePicture: profile.profilePicture,
+      mentoringApproach: profile.mentoringApproach
+    }));
+
+    res.json(mentors);
+  } catch (error) {
+    console.error('Error fetching mentors:', error);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router; 

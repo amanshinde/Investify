@@ -567,101 +567,11 @@ body {
     </div>
 
     <script>document.addEventListener('DOMContentLoaded', function() {
-        // Sample data - in a real app, this would come from your backend API
-        const startups = [
-            {
-                id: 1,
-                title: "EcoTech Solutions",
-                founder: "Alex Johnson",
-                founderInitials: "AJ",
-                industry: "tech",
-                shortDescription: "Sustainable technology for smart cities",
-                fullDescription: "EcoTech Solutions develops IoT-based systems to optimize energy usage in urban environments. Our platform integrates with existing city infrastructure to reduce carbon emissions by up to 30% while maintaining operational efficiency.",
-                problem: "Cities account for 70% of global carbon emissions but lack integrated solutions to monitor and optimize energy usage across different systems.",
-                solution: "Our modular IoT platform provides real-time monitoring and AI-driven optimization for city-wide energy systems including street lighting, traffic signals, and public buildings.",
-                team: "Founded by MIT engineers with 20+ years combined experience in urban planning and IoT technology.",
-                stage: "Series A",
-                funding: "Seeking $5M",
-                contact: "contact@ecotech.com",
-                image: "https://images.unsplash.com/photo-1517502884422-41eaead166d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                id: 2,
-                title: "HealthTrack Pro",
-                founder: "Sarah Williams",
-                founderInitials: "SW",
-                industry: "healthcare",
-                shortDescription: "AI-powered personal health monitoring",
-                fullDescription: "HealthTrack Pro uses wearable technology and machine learning to provide personalized health insights and early detection of potential medical issues. Our system analyzes 50+ biomarkers in real-time and alerts users to concerning trends.",
-                problem: "Most health monitoring systems are reactive rather than proactive, and don't provide personalized insights based on individual health patterns.",
-                solution: "Our AI learns each user's unique health baseline and detects anomalies that may indicate developing health issues before symptoms appear.",
-                team: "Medical doctors and data scientists from Stanford and Johns Hopkins.",
-                stage: "Seed",
-                funding: "Seeking $2M",
-                contact: "hello@healthtrackpro.com",
-                image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-            },
-            {
-                id: 3,
-                title: "Finova",
-                founder: "Michael Chen",
-                founderInitials: "MC",
-                industry: "finance",
-                shortDescription: "Next-gen banking for millennials",
-                fullDescription: "Finova is a mobile-first banking platform that combines traditional banking services with cryptocurrency and investment tools. We're building the all-in-one financial hub for the digital generation.",
-                problem: "Millennials and Gen Z are underserved by traditional banks but don't have time to manage multiple fintech apps for different needs.",
-                solution: "A unified platform with checking/savings accounts, crypto wallets, automated investing, and financial education - all with a simple, intuitive interface.",
-                team: "Former executives from Stripe and Coinbase with deep fintech experience.",
-                stage: "Series B",
-                funding: "Seeking $15M",
-                contact: "invest@finova.com",
-                image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-            }
-        ];
-    
-        // Sample requests data
-        const requests = [
-            {
-                id: 101,
-                startupId: 1,
-                founderName: "Alex Johnson",
-                startupName: "EcoTech Solutions",
-                message: "Hi Mentor, could you review our pitch deck and provide feedback on our go-to-market strategy?",
-                timestamp: "2023-06-15T10:30:00",
-                messages: [
-                    {
-                        text: "Hi Mentor, could you review our pitch deck and provide feedback on our go-to-market strategy?",
-                        sender: "founder",
-                        time: "2023-06-15T10:30:00"
-                    }
-                ]
-            },
-            {
-                id: 102,
-                startupId: 2,
-                founderName: "Sarah Williams",
-                startupName: "HealthTrack Pro",
-                message: "We'd love your insights on our clinical trial approach",
-                timestamp: "2023-06-14T15:45:00",
-                messages: [
-                    {
-                        text: "We'd love your insights on our clinical trial approach",
-                        sender: "founder",
-                        time: "2023-06-14T15:45:00"
-                    },
-                    {
-                        text: "Sure, I'd be happy to help. Can you share more details about your target patient population?",
-                        sender: "mentor",
-                        time: "2023-06-14T16:20:00"
-                    }
-                ]
-            }
-        ];
-    
         // State management
         let state = {
             currentPage: 'dashboard',
-            filteredStartups: [...startups],
+            filteredStartups: [],
+            allStartups: [], // Add this to store all pitches
             currentIndustryFilter: '',
             feedbacks: JSON.parse(localStorage.getItem('mentorFeedbacks')) || [],
             currentChatRequest: null
@@ -691,10 +601,51 @@ body {
         let currentPitchId = null;
     
         // Initialize the app
-        function init() {
+        async function init() {
+            await fetchPitches();
             renderDashboard();
             renderRequests();
             setupEventListeners();
+        }
+    
+        // Fetch pitches from the API
+        async function fetchPitches() {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('No token found');
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                const response = await fetch('http://localhost:5000/api/pitches', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login.html';
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch pitches: ${response.status} ${response.statusText}`);
+                }
+
+                const pitches = await response.json();
+                state.allStartups = pitches; // Store all pitches
+                state.filteredStartups = pitches; // Initialize filtered pitches
+            } catch (error) {
+                console.error('Error fetching pitches:', error);
+                if (error.message.includes('Failed to fetch')) {
+                    alert('Cannot connect to the server. Please make sure the server is running on http://localhost:5000');
+                } else {
+                    alert('Failed to load pitches. Please try again later.');
+                }
+            }
         }
     
         // Set up event listeners
@@ -789,17 +740,16 @@ body {
                 return;
             }
     
-            state.filteredStartups.forEach(startup => {
+            state.filteredStartups.forEach(pitch => {
                 const pitchCard = document.createElement('div');
                 pitchCard.className = 'pitch-card';
                 pitchCard.innerHTML = `
-                    <div class="pitch-image" style="background-image: url('${startup.image}')"></div>
                     <div class="pitch-content">
-                        <h3 class="pitch-title">${startup.title}</h3>
-                        <span class="pitch-industry">${getIndustryName(startup.industry)}</span>
-                        <p class="pitch-description">${startup.shortDescription}</p>
+                        <h3 class="pitch-title">${pitch.title}</h3>
+                        <span class="pitch-industry">${pitch.industry}</span>
+                        <p class="pitch-description">${pitch.description}</p>
                         <div class="pitch-actions">
-                            <button class="view-btn" data-id="${startup.id}">View Pitch</button>
+                            <button class="view-btn" data-id="${pitch._id}">View Pitch</button>
                         </div>
                     </div>
                 `;
@@ -809,7 +759,7 @@ body {
             // Add event listeners to view buttons
             document.querySelectorAll('.view-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    const id = parseInt(e.target.getAttribute('data-id'));
+                    const id = e.target.getAttribute('data-id');
                     showPitchModal(id);
                 });
             });
@@ -819,26 +769,22 @@ body {
         function renderRequests() {
             requestsContainer.innerHTML = '';
             
-            if (requests.length === 0) {
-                requestsContainer.innerHTML = '<p class="empty-message">No pending requests. Founders will appear here when they request your feedback.</p>';
+            if (state.filteredStartups.length === 0) {
+                requestsContainer.innerHTML = '<p class="empty-message">No startups match your filters. Try adjusting your search criteria.</p>';
                 return;
             }
     
-            // Sort requests by timestamp (newest first)
-            const sortedRequests = [...requests].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    
-            sortedRequests.forEach(request => {
-                const startup = startups.find(s => s.id === request.startupId);
+            state.filteredStartups.forEach(pitch => {
                 const requestCard = document.createElement('div');
                 requestCard.className = 'request-card';
-                requestCard.setAttribute('data-id', request.id);
+                requestCard.setAttribute('data-id', pitch._id);
                 requestCard.innerHTML = `
-                    <div class="request-avatar">${startup ? startup.founderInitials : 'F'}</div>
+                    <div class="request-avatar">${pitch.founderInitials}</div>
                     <div class="request-info">
-                        <div class="request-name">${request.founderName}</div>
-                        <div class="request-startup">${request.startupName}</div>
+                        <div class="request-name">${pitch.founderName}</div>
+                        <div class="request-startup">${pitch.title}</div>
                     </div>
-                    <div class="request-time">${formatTime(request.timestamp)}</div>
+                    <div class="request-time">${new Date(pitch.createdAt).toLocaleDateString()}</div>
                 `;
                 requestsContainer.appendChild(requestCard);
             });
@@ -846,7 +792,7 @@ body {
             // Add event listeners to request cards
             document.querySelectorAll('.request-card').forEach(card => {
                 card.addEventListener('click', (e) => {
-                    const id = parseInt(card.getAttribute('data-id'));
+                    const id = e.target.getAttribute('data-id');
                     showChatModal(id);
                 });
             });
@@ -854,11 +800,13 @@ body {
     
         // Apply filters
         function applyFilters() {
-            let filtered = [...startups];
+            let filtered = [...state.allStartups]; // Start with all pitches
             
             // Apply industry filter
             if (state.currentIndustryFilter) {
-                filtered = filtered.filter(startup => startup.industry === state.currentIndustryFilter);
+                filtered = filtered.filter(pitch => 
+                    pitch.industry.toLowerCase() === state.currentIndustryFilter.toLowerCase()
+                );
             }
             
             state.filteredStartups = filtered;
@@ -869,38 +817,38 @@ body {
         function resetFilters() {
             industryFilter.value = '';
             state.currentIndustryFilter = '';
-            state.filteredStartups = [...startups];
+            state.filteredStartups = [...state.allStartups]; // Reset to all pitches
             renderDashboard();
         }
     
         // Show pitch modal
         function showPitchModal(id) {
-            const startup = startups.find(s => s.id === id);
-            if (!startup) return;
+            const pitch = state.filteredStartups.find(p => p._id === id);
+            if (!pitch) return;
             
             currentPitchId = id;
-            modalTitle.textContent = startup.title;
+            modalTitle.textContent = pitch.title;
             
             // Update modal body with full pitch details
             modalBody.innerHTML = `
-                <div class="modal-image" style="background-image: url('${startup.image}'); height: 200px; background-size: cover; background-position: center; margin-bottom: 20px; border-radius: 4px;"></div>
-                <p><strong>Founder:</strong> ${startup.founderName}</p>
-                <p><strong>Industry:</strong> ${getIndustryName(startup.industry)}</p>
-                <p><strong>Stage:</strong> ${startup.stage}</p>
-                <p><strong>Funding Sought:</strong> ${startup.funding}</p>
-                <p><strong>Contact:</strong> ${startup.contact}</p>
+                <p><strong>Industry:</strong> ${pitch.industry}</p>
+                <p><strong>Posted:</strong> ${new Date(pitch.createdAt).toLocaleDateString()}</p>
                 
-                <h3>The Problem</h3>
-                <p>${startup.problem}</p>
+                <h3>Description</h3>
+                <p>${pitch.description}</p>
                 
-                <h3>Our Solution</h3>
-                <p>${startup.solution}</p>
+                <h3>Market Details</h3>
+                <p>${pitch.marketDetails}</p>
                 
-                <h3>The Team</h3>
-                <p>${startup.team}</p>
+                <h3>Traction Details</h3>
+                <p>${pitch.tractionDetails}</p>
                 
-                <h3>Full Description</h3>
-                <p>${startup.fullDescription}</p>
+                <div class="pitch-materials">
+                    <h3>Pitch Materials</h3>
+                    ${pitch.videoUrl ? `<a href="${pitch.videoUrl}" target="_blank" class="btn btn-primary"><i class="fas fa-video"></i> Watch Video</a>` : ''}
+                    ${pitch.pitchDeckUrl ? `<a href="${pitch.pitchDeckUrl}" target="_blank" class="btn btn-primary"><i class="fas fa-file-powerpoint"></i> View Pitch Deck</a>` : ''}
+                    ${pitch.pdfUrl ? `<a href="${pitch.pdfUrl}" target="_blank" class="btn btn-primary"><i class="fas fa-file-pdf"></i> View PDF</a>` : ''}
+                </div>
             `;
             
             modal.style.display = 'block';
@@ -908,13 +856,12 @@ body {
     
         // Show chat modal
         function showChatModal(requestId) {
-            const request = requests.find(r => r.id === requestId);
+            const request = state.filteredStartups.find(p => p._id === requestId);
             if (!request) return;
             
-            const startup = startups.find(s => s.id === request.startupId);
             state.currentChatRequest = request;
             
-            chatModalTitle.textContent = `Chat with ${request.founderName} (${request.startupName})`;
+            chatModalTitle.textContent = `Chat with ${request.founderName} (${request.title})`;
             
             // Render chat messages
             renderChatMessages(request.messages);
@@ -955,13 +902,13 @@ body {
             const feedback = feedbackText.value.trim();
             if (!feedback || !currentPitchId) return;
             
-            const startup = startups.find(s => s.id === currentPitchId);
-            if (!startup) return;
+            const pitch = state.filteredStartups.find(p => p._id === currentPitchId);
+            if (!pitch) return;
             
             // Save feedback (in a real app, this would go to your backend)
             state.feedbacks.push({
                 startupId: currentPitchId,
-                startupName: startup.title,
+                startupName: pitch.title,
                 feedback: feedback,
                 timestamp: new Date().toISOString()
             });
@@ -969,14 +916,14 @@ body {
             localStorage.setItem('mentorFeedbacks', JSON.stringify(state.feedbacks));
             
             // Notify user
-            alert(`Your feedback has been sent to ${startup.title}!`);
+            alert(`Your feedback has been sent to ${pitch.title}!`);
             
             // Close modal and clear feedback
             modal.style.display = 'none';
             feedbackText.value = '';
             
             // In a real app, you would send this to your backend
-            console.log(`Feedback for ${startup.title}: ${feedback}`);
+            console.log(`Feedback for ${pitch.title}: ${feedback}`);
         }
     
         // Send chat message
@@ -999,18 +946,6 @@ body {
             
             // In a real app, you would send this to your backend
             console.log(`Message sent to ${state.currentChatRequest.founderName}: ${message}`);
-        }
-    
-        // Helper function to get industry name
-        function getIndustryName(industryKey) {
-            const industries = {
-                tech: 'Technology',
-                healthcare: 'Healthcare',
-                finance: 'Finance',
-                education: 'Education',
-                ecommerce: 'E-commerce'
-            };
-            return industries[industryKey] || industryKey;
         }
     
         // Helper function to format time
