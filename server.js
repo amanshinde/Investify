@@ -67,13 +67,14 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Auth Backend');
-  });
-  
+});
 
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error(err));
+    .then(() => console.log('MongoDB Connected'))
+    .catch(err => console.error(err));
 
+// API Routes
 app.use('/auth', authRoutes);
 app.use('/api/profiles', profileRoutes);
 app.use('/api/pitches', pitchRoutes);
@@ -83,6 +84,3 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
     console.log(`Server also accessible at http://127.0.0.1:${PORT}`);
 });
-
-const notificationRoutes = require('./routes/notifications');
-app.use('/api/notifications', notificationRoutes);
