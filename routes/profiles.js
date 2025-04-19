@@ -170,4 +170,43 @@ router.post('/startup', verifyToken, async (req, res) => {
   }
 });
 
+// Get profile data for dashboard
+router.get('/dashboard-data', verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    let profile;
+    switch (user.role) {
+      case 'Investor':
+        profile = await InvestorProfile.findOne({ userId: req.userId });
+        break;
+      case 'Mentor':
+        profile = await MentorProfile.findOne({ userId: req.userId });
+        break;
+      case 'Startup':
+        profile = await StartupProfile.findOne({ userId: req.userId });
+        break;
+      default:
+        return res.status(400).json({ msg: 'Invalid role' });
+    }
+
+    if (!profile) {
+      return res.status(404).json({ msg: 'Profile not found' });
+    }
+
+    // Combine user and profile data
+    const dashboardData = {
+      name: user.name,
+      role: user.role,
+      ...profile.toObject()
+    };
+
+    res.json(dashboardData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
 module.exports = router; 

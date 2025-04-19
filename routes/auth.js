@@ -84,4 +84,38 @@ router.get('/google/callback', passport.authenticate('google', {
   successRedirect: '/dashboard'
 }));
 
+// Google OAuth Login
+router.post('/google-login', async (req, res) => {
+  try {
+    const { email, name } = req.body;
+    
+    // Check if user exists
+    let user = await User.findOne({ email });
+    
+    if (!user) {
+      // Create new user if doesn't exist
+      user = new User({
+        name,
+        email,
+        role: 'Startup', // Default role for Google sign-in
+        profileCompleted: false
+      });
+      await user.save();
+    }
+
+    // Generate JWT token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    
+    res.json({
+      token,
+      role: user.role,
+      name: user.name,
+      profileCompleted: user.profileCompleted
+    });
+  } catch (error) {
+    console.error('Google login error:', error);
+    res.status(500).json({ msg: 'Error during Google login' });
+  }
+});
+
 module.exports = router;

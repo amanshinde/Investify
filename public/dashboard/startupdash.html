@@ -14,6 +14,69 @@
             --success-color: #28a745;
             --warning-color: #ffc107;
             --danger-color: #dc3545;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: var(--dark-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
         }
 
         * {
@@ -26,82 +89,97 @@
         body {
             background-color: #f5f7fa;
             color: var(--dark-color);
+            line-height: 1.6;
         }
 
         .container {
             display: flex;
             min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
         }
 
-        /* Sidebar Styles */
+        /* Enhanced Sidebar Styles */
         .sidebar {
-            width: 250px;
-            background-color: var(--primary-color);
+            width: 280px;
+            background: linear-gradient(to right,#004ea1 ,#1084ff );
             color: white;
-            padding: 20px 0;
-            transition: all 0.3s;
+            padding: 25px 0;
+            transition: var(--transition);
             position: fixed;
             height: 100vh;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--box-shadow);
+            z-index: 1000;
         }
 
         .sidebar-header {
-            padding: 0 20px 20px;
+            padding: 0 25px 25px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .sidebar-header h3 {
             color: white;
             font-weight: 600;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
         }
 
         .sidebar-menu {
-            padding: 20px 0;
+            padding: 25px 0;
         }
 
         .menu-item {
-            padding: 12px 20px;
+            padding: 15px 25px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            margin: 8px 15px;
         }
 
         .menu-item:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
         }
 
         .menu-item.active {
-            background-color: var(--secondary-color);
+            background-color: rgba(255, 255, 255, 0.2);
             border-left: 4px solid var(--accent-color);
+            font-weight: 500;
         }
 
         .menu-item i {
-            margin-right: 10px;
-            font-size: 18px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
         }
 
-        /* Main Content Styles */
+        /* Enhanced Main Content Styles */
         .main-content {
             flex: 1;
-            margin-left: 250px;
-            padding: 20px;
+            margin-left: 280px;
+            padding: 30px;
+            transition: var(--transition);
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 20px 30px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 30px;
+            transition: var(--transition);
         }
 
         .header h2 {
             color: var(--secondary-color);
+            font-size: 1.8rem;
+            font-weight: 600;
         }
 
         .user-info {
@@ -116,92 +194,416 @@
             margin-right: 10px;
         }
 
-        /* Card Styles */
+        /* Enhanced Card Styles */
         .card {
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 20px;
-            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
             border-bottom: 1px solid #eee;
         }
 
         .card-header h3 {
             color: var(--secondary-color);
+            font-size: 1.4rem;
+            font-weight: 600;
         }
 
-        /* Form Styles */
+        /* Enhanced Form Styles */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 500;
             color: var(--dark-color);
+            font-size: 1rem;
         }
 
         .form-control {
             width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border 0.3s;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: #f8f9fa;
         }
 
         .form-control:focus {
             border-color: var(--accent-color);
             outline: none;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(79, 195, 247, 0.1);
         }
 
         textarea.form-control {
-            min-height: 120px;
+            min-height: 150px;
             resize: vertical;
         }
 
-        /* File Upload Styles */
+        /* Enhanced File Upload Styles */
         .file-upload {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px;
+            padding: 40px;
             border: 2px dashed #ddd;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 20px;
+            transition: var(--transition);
+            margin-bottom: 25px;
+            background-color: #f8f9fa;
         }
 
         .file-upload:hover {
             border-color: var(--accent-color);
             background-color: rgba(79, 195, 247, 0.05);
+            transform: translateY(-2px);
         }
 
         .file-upload i {
-            font-size: 48px;
+            font-size: 3rem;
             color: var(--accent-color);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .file-upload p {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             color: #666;
+            font-size: 1.1rem;
         }
 
         .file-upload input[type="file"] {
             display: none;
         }
 
+        /* Enhanced Pitch Card Styles */
+        .pitch-card {
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: var(--transition);
+            background-color: white;
+        }
+
+        .pitch-card:hover {
+            box-shadow: var(--box-shadow);
+            transform: translateY(-3px);
+        }
+
+        .pitch-card h4 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .pitch-card p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .pitch-card .pitch-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .pitch-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Enhanced Profile Modal Styles */
+        .profile-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .profile-modal-content {
+            position: relative;
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 600px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .profile-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-modal-header h3 {
+            color: var(--secondary-color);
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--danger-color);
+            transform: rotate(90deg);
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .profile-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #eee;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-details h4 {
+            margin: 0 0 15px 0;
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+        }
+
+        .profile-details p {
+            margin: 8px 0;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Responsive Styles */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar-header h3, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+                padding: 15px;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 1.4rem;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .profile-info {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .pitch-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .container {
+                flex-direction: column;
+            }
+            
+            .menu-item {
+                margin: 5px;
+            }
+            
+            .profile-modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+        }
+
+        /* Animation for page transitions */
+        [id$="-page"] {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Enhanced hidden class */
+        .hidden {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        /* Tab Styles */
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--primary-color);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+            }
+            
+            .menu-item i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .investor-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .investor-actions {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+        }
         .btn {
             padding: 10px 20px;
             border: none;
@@ -247,225 +649,6 @@
         .btn-danger:hover {
             background-color: #c82333;
         }
-
-        /* Pitch Card Styles */
-        .pitch-card {
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: all 0.3s;
-        }
-
-        .pitch-card:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .pitch-card h4 {
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-        }
-
-        .pitch-card p {
-            color: #666;
-            margin-bottom: 15px;
-        }
-
-        .pitch-card .pitch-meta {
-            display: flex;
-            justify-content: space-between;
-            color: #888;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .pitch-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        /* Engagement Metrics */
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .metric-card {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .metric-card h3 {
-            font-size: 32px;
-            color: var(--primary-color);
-            margin-bottom: 5px;
-        }
-
-        .metric-card p {
-            color: #666;
-        }
-
-        /* Feedback Styles */
-        .feedback-item {
-            background-color: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-
-        .feedback-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .feedback-mentor {
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-
-        .feedback-date {
-            color: #888;
-            font-size: 14px;
-        }
-
-        .feedback-rating {
-            color: var(--warning-color);
-            margin-bottom: 10px;
-        }
-
-        .feedback-content {
-            color: #555;
-            line-height: 1.6;
-        }
-
-        /* Investor List Styles */
-        .investor-list {
-            margin-top: 20px;
-        }
-
-        .investor-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            transition: all 0.3s;
-        }
-
-        .investor-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .investor-info {
-            flex: 1;
-        }
-
-        .investor-name {
-            font-weight: 600;
-            color: var(--secondary-color);
-        }
-
-        .investor-email {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .investor-actions a {
-            color: var(--primary-color);
-            text-decoration: none;
-            margin-left: 15px;
-        }
-
-        .investor-actions a:hover {
-            text-decoration: underline;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
-                overflow: hidden;
-            }
-            
-            .sidebar-header h3, .menu-item span {
-                display: none;
-            }
-            
-            .menu-item {
-                justify-content: center;
-            }
-            
-            .menu-item i {
-                margin-right: 0;
-                font-size: 20px;
-            }
-            
-            .main-content {
-                margin-left: 70px;
-            }
-            
-            .metrics {
-                grid-template-columns: 1fr;
-            }
-
-            .investor-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .investor-actions {
-                margin-top: 10px;
-                align-self: flex-end;
-            }
-        }
-
-        /* Hidden class for page switching */
-        .hidden {
-            display: none;
-        }
-
-        /* Tab Styles */
-        .tab-container {
-            margin-bottom: 20px;
-        }
-
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .tab-btn {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            color: #666;
-            border-bottom: 3px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-color);
-            border-bottom: 3px solid var(--primary-color);
-            font-weight: 500;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 20px 0;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -485,10 +668,10 @@
                     <i class="fas fa-file-alt"></i>
                     <span>My Pitch</span>
                 </div>
-                <div class="menu-item" data-page="engagement">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Engagement</span>
-                </div>
+                <div class="menu-item" data-page="mentors">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Mentors</span>
+                  </div>
                 <div class="menu-item" data-page="mentor-feedback">
                     <i class="fas fa-comments"></i>
                     <span>Mentor Feedback</span>
@@ -502,11 +685,11 @@
             <div id="dashboard-page">
                 <div class="header">
                     <h2>Create Your Pitch</h2>
-                    <div class="user-info">
-                        <img src="https://via.placeholder.com/40" alt="User">
-                        <span>Founder</span>
-                    </div>
+                    
                 </div>
+
+                <!-- Profile Modal -->
+                
 
                 <div class="card">
                     <div class="card-header">
@@ -551,9 +734,26 @@
             <div id="my-pitch-page" class="hidden">
                 <div class="header">
                     <h2>My Pitch</h2>
-                    <div class="user-info">
-                        <img src="https://via.placeholder.com/40" alt="User">
-                        <span>Founder</span>
+                    <button class="btn btn-primary" id="profile-btn">
+                        <i class="fas fa-user"></i> View Profile
+                    </button>
+                </div>
+
+                <div id="profile-modal" class="profile-modal">
+                    <div class="profile-modal-content">
+                        <div class="profile-modal-header">
+                            <h3>Startup Profile</h3>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                        <div class="profile-info">
+                            <img id="profile-logo" class="profile-logo" src="https://via.placeholder.com/100" alt="Startup Logo">
+                            <div class="profile-details">
+                                <h4 id="profile-startup-name">Startup Name</h4>
+                                <p><strong>Founder:</strong> <span id="profile-founder-name">Founder Name</span></p>
+                                <p><strong>Industry:</strong> <span id="profile-industry">Industry</span></p>
+                                <p><strong>Description:</strong> <span id="profile-description">Description</span></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -564,12 +764,12 @@
                     </div>
                     <div id="pitch-view">
                         <div class="pitch-card">
-                            <h4 id="view-pitch-title">Startup XYZ - Revolutionizing Industry ABC</h4>
+                            <h4 id="view-pitch-title"></h4>
                             <div class="pitch-meta">
-                                <span>Last updated: <span id="view-pitch-date">June 15, 2023</span></span>
-                                <span>Status: <span class="text-success">Published</span></span>
+                                <span>Last updated: <span id="view-pitch-date"></span></span>
+                                <span>Status: <span class="text-success"></span></span>
                             </div>
-                            <p id="view-pitch-description">Our startup is solving the critical problem of inefficient processes in Industry ABC by leveraging cutting-edge AI technology. With a $10B market opportunity and a unique approach, we're positioned to capture 20% market share within 3 years.</p>
+                            <p id="view-pitch-description"></p>
                             <div class="pitch-actions">
                                 <button class="btn btn-primary" id="view-video-btn">
                                     <i class="fas fa-play"></i> View Video
@@ -592,7 +792,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="edit-pitch-description">Pitch Description</label>
-                                <textarea id="edit-pitch-description" class="form-control" required>Our startup is solving the critical problem of inefficient processes in Industry ABC by leveraging cutting-edge AI technology. With a $10B market opportunity and a unique approach, we're positioned to capture 20% market share within 3 years.</textarea>
+                                <textarea id="edit-pitch-description" class="form-control" required></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Update Pitch Materials</label>
@@ -625,145 +825,61 @@
             </div>
 
             <!-- Engagement Page -->
-            <div id="engagement-page" class="hidden">
-                <div class="header">
-                    <h2>Pitch Engagement</h2>
-                    <div class="user-info">
-                        <img src="https://via.placeholder.com/40" alt="User">
-                        <span>Founder</span>
-                    </div>
-                </div>
-
-                <div class="tab-container">
-                    <div class="tab-buttons">
-                        <button class="tab-btn active" data-tab="metrics">Engagement Metrics</button>
-                        <button class="tab-btn" data-tab="investors">Interested Investors</button>
-                    </div>
-                    
-                    <div class="tab-content active" id="metrics-tab">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Engagement Metrics</h3>
-                                <div>
-                                    <select id="time-period" class="form-control" style="width: auto; display: inline-block;">
-                                        <option value="7">Last 7 days</option>
-                                        <option value="30" selected>Last 30 days</option>
-                                        <option value="90">Last 90 days</option>
-                                        <option value="all">All time</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="metrics">
-                                <div class="metric-card">
-                                    <h3 id="views-count">1,245</h3>
-                                    <p>Total Views</p>
-                                </div>
-                                <div class="metric-card">
-                                    <h3 id="downloads-count">328</h3>
-                                    <p>Deck Downloads</p>
-                                </div>
-                                <div class="metric-card">
-                                    <h3 id="watch-time">4.5</h3>
-                                    <p>Avg. Watch Time (min)</p>
-                                </div>
-                                <div class="metric-card">
-                                    <h3 id="completion-rate">72%</h3>
-                                    <p>Video Completion Rate</p>
-                                </div>
-                            </div>
-
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>Engagement Over Time</h3>
-                                </div>
-                                <div id="engagement-chart" style="height: 300px; background-color: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
-                                    <p style="color: #888;">Engagement chart will be displayed here</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="tab-content" id="investors-tab">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3>Investors Who Expressed Interest</h3>
-                                <div>
-                                    <span class="badge" style="background-color: #e9ecef; padding: 5px 10px; border-radius: 20px; color: #495057;">
-                                        <span id="investor-count">5</span> investors
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <div class="investor-list">
-                                <div class="investor-item">
-                                    <div class="investor-info">
-                                        <div class="investor-name">Michael Anderson</div>
-                                        <div class="investor-email">michael.anderson@venturecapital.com</div>
-                                    </div>
-                                    <div class="investor-actions">
-                                        <a href="mailto:michael.anderson@venturecapital.com"><i class="fas fa-envelope"></i> Contact</a>
-                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                                    </div>
-                                </div>
-                                
-                                <div class="investor-item">
-                                    <div class="investor-info">
-                                        <div class="investor-name">Sarah Johnson</div>
-                                        <div class="investor-email">sarah.johnson@techventures.com</div>
-                                    </div>
-                                    <div class="investor-actions">
-                                        <a href="mailto:sarah.johnson@techventures.com"><i class="fas fa-envelope"></i> Contact</a>
-                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                                    </div>
-                                </div>
-                                
-                                <div class="investor-item">
-                                    <div class="investor-info">
-                                        <div class="investor-name">David Chen</div>
-                                        <div class="investor-email">david.chen@angelinvestors.net</div>
-                                    </div>
-                                    <div class="investor-actions">
-                                        <a href="mailto:david.chen@angelinvestors.net"><i class="fas fa-envelope"></i> Contact</a>
-                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                                    </div>
-                                </div>
-                                
-                                <div class="investor-item">
-                                    <div class="investor-info">
-                                        <div class="investor-name">Emily Rodriguez</div>
-                                        <div class="investor-email">emily.rodriguez@growthfund.com</div>
-                                    </div>
-                                    <div class="investor-actions">
-                                        <a href="mailto:emily.rodriguez@growthfund.com"><i class="fas fa-envelope"></i> Contact</a>
-                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                                    </div>
-                                </div>
-                                
-                                <div class="investor-item">
-                                    <div class="investor-info">
-                                        <div class="investor-name">Robert Williams</div>
-                                        <div class="investor-email">robert.williams@startupfund.com</div>
-                                    </div>
-                                    <div class="investor-actions">
-                                        <a href="mailto:robert.williams@startupfund.com"><i class="fas fa-envelope"></i> Contact</a>
-                                        <a href="#"><i class="fas fa-user"></i> Profile</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- Mentors Page -->
+    <div id="mentors-page" class="hidden">
+        <div class="header">
+          <h2>Mentors</h2>
+        </div>
+  
+        <div class="card">
+          <div class="card-header">
+            <h3>Available Mentors</h3>
+          </div>
+          <div class="investor-list" id="mentor-list">
+            <div class="investor-item">
+              <div class="investor-info">
+                <div class="investor-name">Dr. Sarah Johnson</div>
+                <div class="investor-email">sarah.johnson@techventures.com</div>
+              </div>
+              <div class="investor-actions">
+                <a href="#"><i class="fas fa-user"></i> View Profile</a>
+                <button class="btn btn-primary">Request Feedback</button>
+              </div>
             </div>
-
+  
+            <div class="investor-item">
+              <div class="investor-info">
+                <div class="investor-name">Mark Williams</div>
+                <div class="investor-email">mark.williams@incubator.org</div>
+              </div>
+              <div class="investor-actions">
+                <a href="#"><i class="fas fa-user"></i> View Profile</a>
+                <button class="btn btn-primary">Request Feedback</button>
+              </div>
+            </div>
+  
+            <div class="investor-item">
+              <div class="investor-info">
+                <div class="investor-name">Alex Chen</div>
+                <div class="investor-email">alex.chen@growthcapital.com</div>
+              </div>
+              <div class="investor-actions">
+                <a href="#"><i class="fas fa-user"></i> View Profile</a>
+                <button class="btn btn-primary">Request Feedback</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  
             <!-- Mentor Feedback Page -->
             <div id="mentor-feedback-page" class="hidden">
                 <div class="header">
                     <h2>Mentor Feedback</h2>
-                    <div class="user-info">
-                        <img src="https://via.placeholder.com/40" alt="User">
-                        <span>Founder</span>
-                    </div>
                 </div>
 
                 <div class="card">
@@ -841,6 +957,50 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Profile Modal Functionality
+            const profileBtn = document.getElementById('profile-btn');
+            const profileModal = document.getElementById('profile-modal');
+            const closeModal = document.querySelector('.close-modal');
+
+            profileBtn.addEventListener('click', async function() {
+                try {
+                    const token = localStorage.getItem('token');
+                    const response = await fetch('http://localhost:5000/api/profiles/dashboard-data', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        
+                        // Update modal content with profile data
+                        document.getElementById('profile-logo').src = data.logo || 'https://via.placeholder.com/100';
+                        document.getElementById('profile-startup-name').textContent = data.startupName;
+                        document.getElementById('profile-founder-name').textContent = data.founderName;
+                        document.getElementById('profile-industry').textContent = data.industry;
+                        document.getElementById('profile-description').textContent = data.description;
+                        
+                        profileModal.style.display = 'block';
+                    } else {
+                        alert('Failed to load profile data');
+                    }
+                } catch (error) {
+                    console.error('Error loading profile:', error);
+                    alert('Failed to load profile data');
+                }
+            });
+
+            closeModal.addEventListener('click', function() {
+                profileModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === profileModal) {
+                    profileModal.style.display = 'none';
+                }
+            });
+
             // Page navigation
             const menuItems = document.querySelectorAll('.menu-item');
             const pages = document.querySelectorAll('[id$="-page"]');
@@ -878,55 +1038,213 @@
                 });
             });
 
-            // File upload functionality for dashboard
+            // Load pitch data when page loads
+            async function loadPitchData() {
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        console.error('No authentication token found');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    console.log('Loading pitch data...');
+                    const response = await fetch('http://localhost:5000/api/pitches/my-pitches', {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.status === 401) {
+                        localStorage.removeItem('token');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    if (response.ok) {
+                        const pitches = await response.json();
+                        console.log('Received pitches:', pitches);
+                        
+                        if (pitches.length > 0) {
+                            // Hide create pitch section and show my pitch section
+                            document.getElementById('dashboard-page').classList.add('hidden');
+                            document.getElementById('my-pitch-page').classList.remove('hidden');
+                            
+                            // Update active menu item
+                            const dashboardMenuItem = document.querySelector('[data-page="dashboard"]');
+                            const myPitchMenuItem = document.querySelector('[data-page="my-pitch"]');
+                            
+                            // Collapse dashboard menu item
+                            dashboardMenuItem.style.display = 'none';
+                            myPitchMenuItem.classList.add('active');
+                            
+                            const latestPitch = pitches[0];
+                            console.log('Displaying latest pitch:', latestPitch);
+                            
+                            // Update pitch view with data
+                            const pitchTitle = document.getElementById('view-pitch-title');
+                            pitchTitle.textContent = latestPitch.title;
+                            pitchTitle.setAttribute('data-video-url', latestPitch.videoUrl || '');
+                            pitchTitle.setAttribute('data-ppt-url', latestPitch.pitchDeckUrl || '');
+                            pitchTitle.setAttribute('data-pdf-url', latestPitch.pdfUrl || '');
+                            
+                            document.getElementById('view-pitch-description').textContent = latestPitch.description;
+                            document.getElementById('view-pitch-date').textContent = new Date(latestPitch.updatedAt).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                            });
+
+                            // Update edit form with current values
+                            document.getElementById('edit-pitch-title').value = latestPitch.title;
+                            document.getElementById('edit-pitch-description').value = latestPitch.description;
+                            
+                            // Update file names in edit form
+                            const videoName = document.getElementById('edit-video-name');
+                            const pptName = document.getElementById('edit-ppt-name');
+                            const pdfName = document.getElementById('edit-pdf-name');
+                            
+                            videoName.textContent = latestPitch.videoUrl ? 
+                                'Current: ' + latestPitch.videoUrl.split('/').pop() : 'No file chosen';
+                            pptName.textContent = latestPitch.pitchDeckUrl ? 
+                                'Current: ' + latestPitch.pitchDeckUrl.split('/').pop() : 'No file chosen';
+                            pdfName.textContent = latestPitch.pdfUrl ? 
+                                'Current: ' + latestPitch.pdfUrl.split('/').pop() : 'No file chosen';
+
+                            // Show the pitch view and hide the edit form
+                            document.getElementById('pitch-view').classList.remove('hidden');
+                            document.getElementById('pitch-edit').classList.add('hidden');
+                        } else {
+                            // Show create pitch section and hide my pitch section
+                            document.getElementById('dashboard-page').classList.remove('hidden');
+                            document.getElementById('my-pitch-page').classList.add('hidden');
+                            
+                            // Show dashboard menu item if it was hidden
+                            const dashboardMenuItem = document.querySelector('[data-page="dashboard"]');
+                            dashboardMenuItem.style.display = 'flex';
+                            
+                            // Update active menu item
+                            const myPitchMenuItem = document.querySelector('[data-page="my-pitch"]');
+                            myPitchMenuItem.classList.remove('active');
+                            dashboardMenuItem.classList.add('active');
+                        }
+                    } else {
+                        const errorText = await response.text();
+                        console.error('Failed to load pitch data:', response.status, errorText);
+                        alert('Failed to load pitch data. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error loading pitch data:', error);
+                    alert('Failed to load pitch data. Please try again.');
+                }
+            }
+
+            // Call loadPitchData when the page loads
+            document.addEventListener('DOMContentLoaded', loadPitchData);
+            
+            // Add event listener for My Pitch menu item
+            document.querySelector('[data-page="my-pitch"]').addEventListener('click', loadPitchData);
+
+            // File upload functionality
             const videoUpload = document.getElementById('video-upload');
             const pptUpload = document.getElementById('ppt-upload');
             const pdfUpload = document.getElementById('pdf-upload');
             const videoInput = document.getElementById('pitch-video');
             const pptInput = document.getElementById('pitch-ppt');
             const pdfInput = document.getElementById('pitch-pdf');
-            const videoName = document.getElementById('video-name');
-            const pptName = document.getElementById('ppt-name');
-            const pdfName = document.getElementById('pdf-name');
 
+            // Add click event listeners to file upload containers
             videoUpload.addEventListener('click', () => videoInput.click());
             pptUpload.addEventListener('click', () => pptInput.click());
             pdfUpload.addEventListener('click', () => pdfInput.click());
 
+            // Add change event listeners to file inputs
             videoInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    videoName.textContent = this.files[0].name;
+                    document.getElementById('video-name').textContent = this.files[0].name;
+                } else {
+                    document.getElementById('video-name').textContent = 'No file chosen';
                 }
             });
 
             pptInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    pptName.textContent = this.files[0].name;
+                    document.getElementById('ppt-name').textContent = this.files[0].name;
+                } else {
+                    document.getElementById('ppt-name').textContent = 'No file chosen';
                 }
             });
 
             pdfInput.addEventListener('change', function() {
                 if (this.files.length > 0) {
-                    pdfName.textContent = this.files[0].name;
+                    document.getElementById('pdf-name').textContent = this.files[0].name;
+                } else {
+                    document.getElementById('pdf-name').textContent = 'No file chosen';
                 }
             });
 
-            // Pitch form submission
+            // Modify the pitch form submission to handle single pitch creation
             const pitchForm = document.getElementById('pitch-form');
-            pitchForm.addEventListener('submit', function(e) {
+            pitchForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                const title = document.getElementById('pitch-title').value;
-                const description = document.getElementById('pitch-description').value;
-                
-                // In a real app, you would upload files to a server here
-                alert(`Pitch "${title}" submitted successfully!`);
-                
-                // Reset form
-                pitchForm.reset();
-                videoName.textContent = 'No file chosen';
-                pptName.textContent = 'No file chosen';
-                pdfName.textContent = 'No file chosen';
+                try {
+                    const token = localStorage.getItem('token');
+                    if (!token) {
+                        alert('Please log in first');
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append('title', document.getElementById('pitch-title').value);
+                    formData.append('description', document.getElementById('pitch-description').value);
+                    formData.append('industry', 'Technology');
+                    formData.append('marketDetails', 'Market details here');
+                    formData.append('tractionDetails', 'Traction details here');
+
+                    const videoFile = document.getElementById('pitch-video').files[0];
+                    const pptFile = document.getElementById('pitch-ppt').files[0];
+                    const pdfFile = document.getElementById('pitch-pdf').files[0];
+
+                    if (videoFile) formData.append('video', videoFile);
+                    if (pptFile) formData.append('pitchDeck', pptFile);
+                    if (pdfFile) formData.append('pdf', pdfFile);
+
+                    console.log('Sending pitch data to server...');
+                    const response = await fetch('http://localhost:5000/api/pitches', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.msg || 'Failed to create pitch');
+                    }
+
+                    const data = await response.json();
+                    console.log('Pitch created successfully:', data);
+                    
+                    // Reset form
+                    pitchForm.reset();
+                    document.getElementById('video-name').textContent = 'No file chosen';
+                    document.getElementById('ppt-name').textContent = 'No file chosen';
+                    document.getElementById('pdf-name').textContent = 'No file chosen';
+                    
+                    // Load the new pitch data and switch to My Pitch page
+                    await loadPitchData();
+                } catch (error) {
+                    console.error('Error submitting pitch:', error);
+                    if (error.message.includes('Failed to fetch')) {
+                        alert('Cannot connect to the server. Please make sure the server is running on http://localhost:5000');
+                    } else {
+                        alert(error.message || 'Failed to create pitch. Please try again.');
+                    }
+                }
             });
 
             // My Pitch page functionality
@@ -950,11 +1268,11 @@
                 e.preventDefault();
                 
                 // Update the view with edited content
-                document.getElementById('view-pitch-title').textContent = 
+                document.getElementById('view-pitch-title').textContent = data.title;
                     document.getElementById('edit-pitch-title').value;
-                document.getElementById('view-pitch-description').textContent = 
+                document.getElementById('view-pitch-description').textContent = data.description;
                     document.getElementById('edit-pitch-description').value;
-                document.getElementById('view-pitch-date').textContent = 
+                document.getElementById('view-pitch-date').textContent = data.createdAt;
                     new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                 
                 // Handle file updates in a real app
@@ -979,29 +1297,32 @@
                 alert('Pitch updated successfully!');
             });
 
-            // File upload functionality for edit section
-            const editVideoUpload = document.getElementById('edit-video-upload');
-            const editPptUpload = document.getElementById('edit-ppt-upload');
-            const editPdfUpload = document.getElementById('edit-pdf-upload');
-            const editVideoInput = document.getElementById('edit-pitch-video');
-            const editPptInput = document.getElementById('edit-pitch-ppt');
-            const editPdfInput = document.getElementById('edit-pitch-pdf');
-
-            editVideoUpload.addEventListener('click', () => editVideoInput.click());
-            editPptUpload.addEventListener('click', () => editPptInput.click());
-            editPdfUpload.addEventListener('click', () => editPdfInput.click());
-
             // View buttons functionality
             document.getElementById('view-video-btn').addEventListener('click', function() {
-                alert('Opening pitch video...');
+                const videoUrl = document.getElementById('view-pitch-title').getAttribute('data-video-url');
+                if (videoUrl) {
+                    window.open(`http://localhost:5000${videoUrl}`, '_blank');
+                } else {
+                    alert('No video available');
+                }
             });
 
             document.getElementById('view-ppt-btn').addEventListener('click', function() {
-                alert('Opening pitch deck...');
+                const pptUrl = document.getElementById('view-pitch-title').getAttribute('data-ppt-url');
+                if (pptUrl) {
+                    window.open(`http://localhost:5000${pptUrl}`, '_blank');
+                } else {
+                    alert('No pitch deck available');
+                }
             });
 
             document.getElementById('view-pdf-btn').addEventListener('click', function() {
-                alert('Opening additional PDF...');
+                const pdfUrl = document.getElementById('view-pitch-title').getAttribute('data-pdf-url');
+                if (pdfUrl) {
+                    window.open(`http://localhost:5000${pdfUrl}`, '_blank');
+                } else {
+                    alert('No PDF available');
+                }
             });
 
             // Engagement page time period filter

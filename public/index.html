@@ -5,72 +5,209 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Investify</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    :root {
+      --primary-color: #2563eb;
+      --secondary-color: #1d4ed8;
+      --accent-color: #3b82f6;
+      --text-color: #1f2937;
+      --light-bg: #f8fafc;
+      --white: #ffffff;
+      --transition: all 0.3s ease;
+    }
+
     * {
       scroll-behavior: smooth;
     }
 
     body {
       font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f7fa;
+      background-color: var(--light-bg);
       margin: 0;
       padding: 0;
+      color: var(--text-color);
     }
 
     .navbar {
-      background-color: #ffffff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      background-color: var(--white);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 1rem 0;
+      transition: var(--transition);
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .navbar-brand i {
+      font-size: 1.8rem;
     }
 
     .hero {
-      padding: 100px 20px;
+      padding: 120px 20px;
       text-align: center;
-      background: linear-gradient(to right, #007bff, #00bfff);
-      color: white;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+      background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: overlay;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(37, 99, 235, 0.75), rgba(59, 130, 246, 0.75));
+      z-index: 1;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
     }
 
     .hero h1 {
-      font-size: 3rem;
-      font-weight: bold;
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
     }
 
     .hero p {
       font-size: 1.25rem;
-      margin-top: 1rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .cta-buttons {
-      margin-top: 2rem;
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .btn-light {
+      background-color: var(--white);
+      color: var(--primary-color);
+    }
+
+    .btn-light:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-light {
+      border: 2px solid var(--white);
+    }
+
+    .btn-outline-light:hover {
+      background-color: var(--white);
+      color: var(--primary-color);
+      transform: translateY(-2px);
     }
 
     .info-section {
-      padding: 60px 20px;
-      text-align: center;
+      padding: 100px 20px;
+      background-color: var(--white);
     }
 
     .info-section h2 {
-      margin-bottom: 30px;
-      font-weight: 600;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      color: var(--text-color);
+      text-align: center;
     }
 
     .feature-box {
-      padding: 20px;
-      border-radius: 12px;
-      background-color: #ffffff;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease;
+      padding: 2rem;
+      border-radius: 16px;
+      background-color: var(--white);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transition: var(--transition);
+      height: 100%;
+      border: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .feature-box:hover {
-      transform: translateY(-5px);
+      transform: translateY(-8px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-box i {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-box h5 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+
+    .feature-box p {
+      color: #64748b;
+      line-height: 1.6;
     }
 
     footer {
-      padding: 20px;
+      padding: 2rem;
       text-align: center;
-      background-color: #f1f1f1;
+      background-color: var(--white);
+      color: #64748b;
       font-size: 0.9rem;
-      color: #666;
+      border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .info-section {
+        padding: 60px 20px;
+      }
+
+      .feature-box {
+        margin-bottom: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -79,7 +216,10 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#">Investify</a>
+      <a class="navbar-brand" href="#">
+        <i class="fas fa-chart-line"></i>
+        Investify
+      </a>
       <div class="d-flex ms-auto">
         <a href="login.html" class="btn btn-outline-primary me-2">Sign in</a>
       </div>
@@ -90,9 +230,9 @@
   <section class="hero" id="home">
     <div class="container">
       <h1>Connect Startups with Mentors & Investors</h1>
-      <p>Your gateway to innovation, guidance, and funding — all in one portal.</p>
+      <p>Your gateway to innovation, guidance, and funding — all in one portal. Transform your ideas into reality with our powerful network.</p>
       <div class="cta-buttons">
-        <a href="login.html" class="btn btn-light btn-lg me-2">Get Started</a>
+        <a href="login.html" class="btn btn-light btn-lg">Get Started</a>
         <a href="#learn-more" class="btn btn-outline-light btn-lg">Learn More</a>
       </div>
     </div>
@@ -105,20 +245,23 @@
       <div class="row g-4">
         <div class="col-md-4">
           <div class="feature-box">
+            <i class="fas fa-rocket"></i>
             <h5>For Startups</h5>
-            <p>Pitch your idea to the right audience and get mentorship and funding to bring your vision to life.</p>
+            <p>Pitch your idea to the right audience and get mentorship and funding to bring your vision to life. Access a network of experienced mentors and investors.</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="feature-box">
+            <i class="fas fa-user-graduate"></i>
             <h5>For Mentors</h5>
-            <p>Share your knowledge, guide passionate innovators, and be part of exciting journeys from the ground up.</p>
+            <p>Share your knowledge, guide passionate innovators, and be part of exciting journeys from the ground up. Make a lasting impact on the next generation of entrepreneurs.</p>
           </div>
         </div>
         <div class="col-md-4">
           <div class="feature-box">
+            <i class="fas fa-chart-pie"></i>
             <h5>For Investors</h5>
-            <p>Discover investment-worthy ideas, support emerging businesses, and fuel the future of entrepreneurship.</p>
+            <p>Discover investment-worthy ideas, support emerging businesses, and fuel the future of entrepreneurship. Find your next big opportunity.</p>
           </div>
         </div>
       </div>
@@ -127,7 +270,9 @@
 
   <!-- Footer -->
   <footer>
-    &copy; 2025 Investify. All rights reserved.
+    <div class="container">
+      <p>&copy; 2025 Investify. All rights reserved.</p>
+    </div>
   </footer>
 
 </body>

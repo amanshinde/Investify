@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="login.css" />
+    <!-- Load jwt-decode first -->
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+    <!-- Then load Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
@@ -100,7 +103,7 @@ function handleGoogleCredentialResponse(response) {
   const decoded = jwt_decode(response.credential);
   const { email, name } = decoded;
 
-  fetch("http://localhost:5000/api/auth/google-login", {
+  fetch("http://localhost:5000/auth/google-login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -109,29 +112,77 @@ function handleGoogleCredentialResponse(response) {
   })
     .then(res => res.json())
     .then(data => {
-      localStorage.setItem("token", data.token);
-      alert("Google Sign-In successful!");
-      window.location.href = "scan.html";
+      if (data.token) {
+        // Store token and user info
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
+        localStorage.setItem("name", data.name);
+
+        // Redirect based on profile completion
+        if (data.profileCompleted) {
+          switch(data.role) {
+            case 'Investor':
+              window.location.href = 'dashboard/investordash.html';
+              break;
+            case 'Mentor':
+              window.location.href = 'dashboard/mentordash.html';
+              break;
+            case 'Startup':
+              window.location.href = 'dashboard/startupdash.html';
+              break;
+          }
+        } else {
+          switch(data.role) {
+            case 'Investor':
+              window.location.href = 'profile/investor.html';
+              break;
+            case 'Mentor':
+              window.location.href = 'profile/mentor.html';
+              break;
+            case 'Startup':
+              window.location.href = 'profile/startup.html';
+              break;
+          }
+        }
+      } else {
+        alert("Google Sign-In failed. Please try again.");
+      }
     })
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.error('Google Sign-In error:', err);
+      alert("Google Sign-In failed. Please try again.");
+    });
 }
 
-
-// Initialize Google Sign-In button for Sign Up
+// Initialize Google Sign-In
 window.onload = function () {
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
-    callback: handleGoogleCredentialResponse
+    callback: handleGoogleCredentialResponse,
+    auto_select: false,
+    cancel_on_tap_outside: true
   });
 
-  google.accounts.id.renderButton(
-    document.getElementById("g_id_signup"),
-    { theme: "outline", size: "large" }
-  );
-
+  // Render sign-in button
   google.accounts.id.renderButton(
     document.getElementById("g_id_signin"),
-    { theme: "outline", size: "large" }
+    { 
+      theme: "outline", 
+      size: "large",
+      width: "100%",
+      text: "signin_with"
+    }
+  );
+
+  // Render sign-up button
+  google.accounts.id.renderButton(
+    document.getElementById("g_id_signup"),
+    { 
+      theme: "outline", 
+      size: "large",
+      width: "100%",
+      text: "signup_with"
+    }
   );
 };
 

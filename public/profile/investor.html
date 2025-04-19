@@ -241,6 +241,7 @@
             const name = document.getElementById('investorName').value.trim();
             const company = document.getElementById('company').value.trim();
             const description = document.getElementById('investorDescription').value.trim();
+            const profilePicture = document.getElementById('investorProfilePic').src;
 
             if (!name || !company || !description) {
                 alert("Please fill in all required fields.");
@@ -248,9 +249,30 @@
             }
 
             try {
-                // Mark profile as completed
                 const token = localStorage.getItem('token');
-                const res = await fetch('http://localhost:5000/auth/complete-profile', {
+                
+                // First, save the investor profile
+                const profileRes = await fetch('http://localhost:5000/api/profiles/investor', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        company,
+                        description,
+                        profilePicture,
+                        investmentFocus: [] // You might want to add investment focus selection to the form
+                    })
+                });
+
+                if (!profileRes.ok) {
+                    const data = await profileRes.json();
+                    throw new Error(data.msg || 'Failed to save profile');
+                }
+
+                // Then mark profile as completed
+                const completeRes = await fetch('http://localhost:5000/auth/complete-profile', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -258,15 +280,15 @@
                     }
                 });
 
-                if (res.ok) {
+                if (completeRes.ok) {
                     // Redirect to dashboard
                     window.location.href = `http://localhost:5000/dashboard/investordash.html`;
                 } else {
-                    alert('Failed to complete profile. Please try again.');
+                    throw new Error('Failed to complete profile');
                 }
             } catch (err) {
                 console.error(err);
-                alert('An error occurred. Please try again.');
+                alert(err.message || 'An error occurred. Please try again.');
             }
         }
     </script>
