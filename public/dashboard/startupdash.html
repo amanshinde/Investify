@@ -1277,7 +1277,7 @@
             document.getElementById('view-video-btn').addEventListener('click', function() {
                 const videoUrl = document.getElementById('view-pitch-title').getAttribute('data-video-url');
                 if (videoUrl) {
-                    window.open(`http://localhost:5000${videoUrl}`, '_blank');
+                    window.open(`${videoUrl}`, '_blank');
                 } else {
                     alert('No video available');
                 }
@@ -1286,7 +1286,7 @@
             document.getElementById('view-ppt-btn').addEventListener('click', function() {
                 const pptUrl = document.getElementById('view-pitch-title').getAttribute('data-ppt-url');
                 if (pptUrl) {
-                    window.open(`http://localhost:5000${pptUrl}`, '_blank');
+                    window.open(`${pptUrl}`, '_blank');
                 } else {
                     alert('No pitch deck available');
                 }
@@ -1295,7 +1295,7 @@
             document.getElementById('view-pdf-btn').addEventListener('click', function() {
                 const pdfUrl = document.getElementById('view-pitch-title').getAttribute('data-pdf-url');
                 if (pdfUrl) {
-                    window.open(`http://localhost:5000${pdfUrl}`, '_blank');
+                    window.open(`${pdfUrl}`, '_blank');
                 } else {
                     alert('No PDF available');
                 }
